@@ -55,6 +55,8 @@ local redirect_urls = {}
 local tlds = {}
 local visited_urls = {}
 
+local ftp_urls = {[""]={}}
+
 local tlds_file = io.open("static-tlds.txt", "r")
 for tld in tlds_file:lines() do
   tlds[tld] = true
@@ -829,6 +831,7 @@ wget.callbacks.finish = function(start_time, end_time, wall_time, numurls, total
 
   for key, items_data in pairs({
     ["usgovernment-inbox-c7hgbf30vmn7gkv6"] = queued_urls,
+    ["ftp-urls-en2fk0pjyxljsf9"] = ftp_urls,
   }) do
     local project_name = string.match(key, "^(.+)%-")
     for shard, url_data in pairs(items_data) do
