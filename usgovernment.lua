@@ -263,7 +263,7 @@ wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_pars
     return false
   end
 
-print(url)
+--print(url)
 
   --[[if find_path_loop(url, 2) then
     return false
