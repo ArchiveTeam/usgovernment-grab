@@ -184,9 +184,9 @@ queue_url = function(url, withcustom)
     target_project[shard] = {}
   end
   if not target_project[shard][url] then
-    --[[if find_path_loop(url, 2) then
+    if find_path_loop(url, 3) then
       return false
-    end]]
+    end
 --print("queuing",original, url)
     target_project[shard][url] = current_url
   end
@@ -267,9 +267,9 @@ wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_pars
 
 --print(url)
 
-  --[[if find_path_loop(url, 2) then
+  if find_path_loop(url, 3) then
     return false
-  end]]
+  end
 
   queue_url(url)
   return false
