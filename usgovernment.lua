@@ -355,23 +355,24 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     end
   end
 
-  if string.match(url, "^https?://[^/]*govinfo%.gov/") then
-    local s = string.match(url, "/app/details/([^/%?&]+)$")
-    if s then
-      queue_url('https://www.govinfo.gov/wssearch/getContentDetail?packageId=' .. s)
-    elseif string.match(url, "/wssearch/getContentDetail%?packageId=") then
-      local json = cjson.decode(read_file(file))
-      queue_from_json(json)
+  if url then
+    if string.match(url, "^https?://[^/]*govinfo%.gov/") then
+      local s = string.match(url, "/app/details/([^/%?&]+)$")
+      if s then
+        queue_url('https://www.govinfo.gov/wssearch/getContentDetail?packageId=' .. s)
+      elseif string.match(url, "/wssearch/getContentDetail%?packageId=") then
+        local json = cjson.decode(read_file(file))
+        queue_from_json(json)
+      end
     end
-  end
-
-  if status_code == 200 then
-    if string.match(url, "%.m3u8") then
-      html = read_file(file)
-      if string.match(html, "^%s*#") then
-        for line in string.gmatch(html, "([^\r\n]+)") do
-          if not string.match(line, "^%s*#") then
-            queue_url(urlparse.absolute(url, line))
+    if status_code == 200 then
+      if string.match(url, "%.m3u8") then
+        html = read_file(file)
+        if string.match(html, "^%s*#") then
+          for line in string.gmatch(html, "([^\r\n]+)") do
+            if not string.match(line, "^%s*#") then
+              queue_url(urlparse.absolute(url, line))
+            end
           end
         end
       end
