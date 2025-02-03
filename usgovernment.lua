@@ -341,6 +341,30 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     end
   end
 
+  local function queue_from_json(json)
+    for k, v in pairs(json) do
+      local type_ = type(v)
+      if type_ == "table" then
+        queue_from_json(v)
+      elseif type_ == "string" then
+        if string.match(v, "^https?://.")
+          or string.match(v, "^//.") then
+          queue_url(urlparse.absolute(url, v))
+        end
+      end
+    end
+  end
+
+  if string.match(url, "^https?://[^/]*govinfo%.gov/") then
+    local s = string.match(url, "/app/details/([^/%?&]+)$")
+    if s then
+      queue_url('https://www.govinfo.gov/wssearch/getContentDetail?packageId=' .. s)
+    elseif string.match(url, "/wssearch/getContentDetail%?packageId=") then
+      local json = cjson.decode(read_file(file))
+      queue_from_json(json)
+    end
+  end
+
   if not url then
     html = read_file(file)
     if not url then
