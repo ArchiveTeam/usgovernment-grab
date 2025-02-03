@@ -14,6 +14,7 @@ local killgrab = false
 local exit_url = false
 
 local timestamp = nil
+local skip_double_patterns = {}
 
 local current_file = nil
 local current_file_html = nil
@@ -80,6 +81,12 @@ for line in paths_file:lines() do
   paths[line] = true
 end
 paths_file:close()
+
+local skip_double_patterns_file = io.open("static-skip-double-patterns.txt", "r")
+for pattern in skip_double_patterns_file:lines() do
+  table.insert(skip_double_patterns, pattern)
+end
+skip_double_patterns_file:close()
 
 kill_grab = function(item)
   io.stdout:write("Aborting crawling.\n")
@@ -263,6 +270,13 @@ wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_pars
   if string.match(url, "^ftp://") then
     ftp_urls[""][url] = current_url
     return false
+  end
+
+  for _, pattern in pairs(skip_double_patterns) do
+    if string.match(parenturl, pattern)
+      and string.match(url, pattern) then
+      return false
+    end
   end
 
 --print(url)
