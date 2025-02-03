@@ -365,6 +365,19 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     end
   end
 
+  if status_code == 200 then
+    if string.match(url, "%.m3u8") then
+      html = read_file(file)
+      if string.match(html, "^%s*#") then
+        for line in string.gmatch(html, "([^\r\n]+)") do
+          if not string.match(line, "^%s*#") then
+            queue_url(urlparse.absolute(url, line))
+          end
+        end
+      end
+    end
+  end
+
   if not url then
     html = read_file(file)
     if not url then
