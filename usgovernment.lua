@@ -712,6 +712,27 @@ wget.callbacks.write_to_warc = function(url, http_stat)
   if bad_code(http_stat["statcode"]) then
     return false
   end
+  if http_stat["statcode"] >= 300 and http_stat["statcode"] <= 399 then
+    local newloc = urlparse.absolute(url["url"], http_stat["newloc"])
+    for _, s in pairs({
+      "429",
+      "block",
+      "blocked",
+      "unblock",
+      "ban",
+      "banned",
+      "unban",
+      "abuse",
+      "misuse",
+    }) do
+      if string.match(newloc, "[^0-9a-zA-Z]" .. s .. "[^0-9a-zA-Z]") then
+        io.stdout:write("Bad redirect to " .. newloc .. ".\n")
+        io.stdout:flush()
+        report_bad_url(url["url"])
+        return false
+      end
+    end
+  end
   return true
 end
 
@@ -739,6 +760,11 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
 
   if killgrab then
     return wget.actions.ABORT
+  end
+
+  if bad_urls[current_url] then
+    report_bad_url(url["url"])
+    return wget.actions.EXIT
   end
 
   local url_path = string.match(url["url"], "^https?://[^/]+(/[a-zA-Z0-9_%-%./]*)[^a-zA-Z0-9_%-%./]")
