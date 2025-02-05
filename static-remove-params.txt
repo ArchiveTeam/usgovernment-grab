@@ -18,6 +18,7 @@ jfwid
 phpsessid
 aspsessionid
 sessionid
+session
 zenid
 sid
 gclid
