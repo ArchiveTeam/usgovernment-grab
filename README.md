@@ -1,6 +1,6 @@
 # usgovernment-grab
 
-More information about the archiving project can be found on the ArchiveTeam wiki: [US Government](https://wiki.archiveteam.org/index.php?title=US Government)
+More information about the archiving project can be found on the ArchiveTeam wiki: [US Government](https://wiki.archiveteam.org/index.php?title=US%20Government)
 
 ## Setup instructions
 
