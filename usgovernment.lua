@@ -731,7 +731,8 @@ wget.callbacks.write_to_warc = function(url, http_stat)
       "auth",
       "account",
       "oauth",
-      "authori[sz]e"
+      "authori[sz]e",
+      "back[_%-]?url",
     }) do
       if string.match(newloc, "[^0-9a-zA-Z]" .. s .. "[^0-9a-zA-Z]") then
         io.stdout:write("Bad redirect to " .. newloc .. ".\n")
