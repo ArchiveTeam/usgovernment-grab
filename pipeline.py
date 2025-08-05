@@ -84,7 +84,7 @@ WGET_AT_COMMAND = [WGET_AT]
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20250207.03'
+VERSION = '20250805.01'
 #USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36'
 TRACKER_ID = 'usgovernment'
 TRACKER_HOST = 'legacy-api.arpa.li'
@@ -125,7 +125,7 @@ class CheckIP(SimpleTask):
                 'capture_output': True
             }
 
-            url = 'http://legacy-api.arpa.li/now'
+            url = 'https://legacy-api.arpa.li/now'
             returned = subprocess.run(
                 command+[url],
                 **kwargs
@@ -460,7 +460,7 @@ project = Project(
     title = 'US Government',
     project_html = '''
     <img class="project-logo" alt="logo" src="https://wiki.archiveteam.org/images/thumb/7/72/Greater_coat_of_arms_of_the_United_States.png/568px-Greater_coat_of_arms_of_the_United_States.png" height="50px"/>
-    <h2>Archiving the US government. &middot; <a href="http://tracker.archiveteam.org/usgovernment/">Leaderboard</a></span></h2>
+    <h2>Archiving the US government. &middot; <a href="https://tracker.archiveteam.org/usgovernment/">Leaderboard</a></span></h2>
     '''
 )
 
