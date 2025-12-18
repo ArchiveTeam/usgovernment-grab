@@ -84,7 +84,7 @@ WGET_AT_COMMAND = [WGET_AT]
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20250813.01'
+VERSION = '20251218.01'
 #USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36'
 TRACKER_ID = 'usgovernment'
 TRACKER_HOST = 'legacy-api.arpa.li'
@@ -179,21 +179,20 @@ class CheckIP(SimpleTask):
                 b'Server: nginx/1\\.22\\.1\r\n'
                 b'Date: [A-Z][a-z]{2}, [0-9]{2} [A-Z][a-z]{2} 202[0-9] [0-9]{2}:[0-9]{2}:[0-9]{2} GMT\r\n'
                 b'Content-Type: text/html\r\n'
-                b'Content-Length: [56][0-9]{3}\r\n'
+                b'Content-Length: [23][0-9]{3}\r\n'
+                b'Last-Modified: [A-Z][a-z]{2}, [0-9]{2} [A-Z][a-z]{2} 202[0-9] [0-9]{2}:[0-9]{2}:[0-9]{2} GMT\r\n'
                 b'Connection: keep-alive\r\n'
                 b'Keep-Alive: timeout=5\r\n'
-                b'Last-Modified: [A-Z][a-z]{2}, [0-9]{2} [A-Z][a-z]{2} 202[0-9] [0-9]{2}:[0-9]{2}:[0-9]{2} GMT\r\n'
                 b'ETag: "[^"]+"\r\n'
+                b'Strict-Transport-Security: max-age=63072000; includeSubdomains; preload\r\n'
                 b'Accept-Ranges: bytes\r\n'
-                #b'Strict-Transport-Security: max-age=31536000; includeSubdomains; preload\r\n'
-                b'X-Content-Type-Options: nosniff\r\n'
                 b'\r\n',
                 returned.stdout
             ), 'Bad stdout on {}, got {}.'.format(url, repr(returned.stdout))
             for b in (
-                b'<title>Yes, you ARE using quad9</title>',
-                b'<font color=#dc205e>YES</font>',
-                b'You ARE using <font color=#ffffff>quad</font><font color=#dc205e>9</font>'
+                b'<title>Yes, you ARE using quad9. | Quad9</title>',
+                b'<h1 id="banner">YES</h1>',
+                b'data-result="yes"'
             ):
                 assert b in returned.stdout, 'Bad stdout on {}, got {}.'.format(url, repr(returned.stdout))
 
